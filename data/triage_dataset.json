@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "generated_at": "2026-02-15T02:43:30.336548",
+    "total_cases": 10,
+    "severity_distribution": {
+      "high": 3,
+      "medium": 4,
+      "low": 3
+    }
+  },
+  "cases": [
+    {
+      "case_id": "CASE-001",
+      "title": "Unauthorized Root Access Detected",
+      "description": "System logs show successful root login from unknown IP address 203.0.113.45 at 03:42 UTC. No corresponding change ticket exists.",
+      "context": "Company policy requires immediate escalation for any unauthorized privileged access. This IP is not in our approved range.",
+      "ground_truth": {
+        "severity": "high",
+        "action": "escalate"
+      },
+      "category": "access_control",
+      "created_at": "2026-02-15T02:43:30.336548"
+    },
+    {
+      "case_id": "CASE-002",
+      "title": "Potential Data Exfiltration Event",
+      "description": "Firewall detected 15GB outbound transfer to unknown cloud storage endpoint over 2-hour period from employee workstation.",
+      "context": "Data loss prevention system flagged the transfer. Endpoint contained customer PII based on pattern matching.",
+      "ground_truth": {
+        "severity": "high",
+        "action": "escalate"
+      },
+      "category": "data_protection",
+      "created_at": "2026-02-15T02:43:30.336548"
+    },
+    {
+      "case_id": "CASE-003",
+      "title": "Ransomware Signature Detected",
+      "description": "EDR system identified file encryption behavior matching known ransomware family on file server FS-PROD-08.",
+      "context": "Automated containment has isolated the affected host. 127 files were encrypted before detection.",
+      "ground_truth": {
+        "severity": "high",
+        "action": "escalate"
+      },
+      "category": "malware",
+      "created_at": "2026-02-15T02:43:30.336548"
+    },
+    {
+      "case_id": "CASE-004",
+      "title": "Repeated Failed Login Attempts",
+      "description": "User account shows 25 failed login attempts from 3 different IP addresses within 10 minutes.",
+      "context": "Account belongs to finance team member. IPs are geographically dispersed (US, EU, APAC).",
+      "ground_truth": {
+        "severity": "medium",
+        "action": "escalate"
+      },
+      "category": "access_control",
+      "created_at": "2026-02-15T02:43:30.336548"
+    },
+    {
+      "case_id": "CASE-005",
+      "title": "Unpatched Critical Vulnerability Detected",
+      "description": "Vulnerability scan identified CVE-2024-1234 (CVSS 8.9) on 3 production web servers. Exploit code is publicly available.",
+      "context": "Patch was released 14 days ago. Affected servers handle customer portal authentication.",
+      "ground_truth": {
+        "severity": "medium",
+        "action": "escalate"
+      },
+      "category": "vulnerability_management",
+      "created_at": "2026-02-15T02:43:30.336548"
+    },
+    {
+      "case_id": "CASE-006",
+      "title": "Expired SSL Certificate on Dev Server",
+      "description": "Certificate for dev-internal.example.com expired yesterday. Server is only accessible from internal development network.",
+      "context": "This is a non-production development environment with no external exposure or sensitive data.",
+      "ground_truth": {
+        "severity": "low",
+        "action": "no_escalate"
+      },
+      "category": "certificate_management",
+      "created_at": "2026-02-15T02:43:30.336548"
+    },
+    {
+      "case_id": "CASE-007",
+      "title": "Routine Compliance Scan Completed",
+      "description": "Monthly PCI-DSS compliance scan completed successfully with 0 high or medium findings.",
+      "context": "All systems passed. Report will be filed with compliance team per standard process.",
+      "ground_truth": {
+        "severity": "low",
+        "action": "no_escalate"
+      },
+      "category": "compliance",
+      "created_at": "2026-02-15T02:43:30.336548"
+    },
+    {
+      "case_id": "CASE-008",
+      "title": "Antivirus Definition Update Failed",
+      "description": "Single workstation failed to download latest antivirus signatures due to temporary network issue.",
+      "context": "Workstation is in isolated guest network. User reported issue; update completed successfully after network restoration.",
+      "ground_truth": {
+        "severity": "low",
+        "action": "no_escalate"
+      },
+      "category": "endpoint_protection",
+      "created_at": "2026-02-15T02:43:30.336548"
+    },
+    {
+      "case_id": "CASE-009",
+      "title": "Suspicious PowerShell Execution",
+      "description": "PowerShell executed with encoded command parameter on HR workstation. Command attempted network connection to external IP.",
+      "context": "Behavior matches reconnaissance patterns. User claims no knowledge of execution.",
+      "ground_truth": {
+        "severity": "medium",
+        "action": "escalate"
+      },
+      "category": "threat_detection",
+      "created_at": "2026-02-15T02:43:30.336548"
+    },
+    {
+      "case_id": "CASE-010",
+      "title": "Database Access from New Location",
+      "description": "Production database accessed by admin account from IP in country where company has no operations.",
+      "context": "Access occurred outside business hours. Query patterns appear normal but location is anomalous.",
+      "ground_truth": {
+        "severity": "medium",
+        "action": "escalate"
+      },
+      "category": "access_control",
+      "created_at": "2026-02-15T02:43:30.336548"
+    }
+  ]
+}
