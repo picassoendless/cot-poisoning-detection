@@ -352,8 +352,8 @@ Copyright © 2026 Tendai Nemure. All rights reserved.
 M.S. Cybersecurity   
 Yeshiva University, NY  
 Email: [tnemure@mail.yu.edu]  
-LinkedIn: [[your-linkedin](https://www.linkedin.com/in/tendai-nemure/)]  
-GitHub: [[your-github](https://github.com/picassoendless)]
+LinkedIn: [[Linkedin](https://www.linkedin.com/in/tendai-nemure/)]  
+GitHub: [[Github](https://github.com/picassoendless)]
 
 ---
 
