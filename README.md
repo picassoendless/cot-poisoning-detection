@@ -3,7 +3,7 @@
 **Author:** Tendai Nemure  
 **Institution:** Yeshiva University - Katz School of Science and Health  
 **Program:** M.S. Cybersecurity  
-**Expected Completion:** August 2026
+
 
 ---
 
@@ -341,7 +341,7 @@ Copyright © 2026 Tendai Nemure. All rights reserved.
 
 - **Tensor Trust Dataset:** Toyer et al., "Tensor Trust: Interpretable Prompt Injection Attacks from an Online Game"
 - **NIST AI RMF:** National Institute of Standards and Technology
-- **Advisor:** [Your Professor's Name]
+- **Advisor:** [Professor Dan Galeon]
 - **Institution:** Yeshiva University, Katz School of Science and Health
 
 ---
@@ -349,11 +349,11 @@ Copyright © 2026 Tendai Nemure. All rights reserved.
 ## Contact
 
 **Tendai Nemure**  
-M.S. Cybersecurity Candidate  
-Yeshiva University  
-Email: [your-email@yu.edu]  
-LinkedIn: [your-linkedin]  
-GitHub: [your-github]
+M.S. Cybersecurity   
+Yeshiva University, NY  
+Email: [tnemure@mail.yu.edu]  
+LinkedIn: [[your-linkedin](https://www.linkedin.com/in/tendai-nemure/)]  
+GitHub: [[your-github](https://github.com/picassoendless)]
 
 ---
 
@@ -370,4 +370,4 @@ M.S. Capstone Project, Yeshiva University.
 ---
 
 **Last Updated:** February 2026  
-**Project Status:** In Progress (Week 5 of 14)
+
