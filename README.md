@@ -27,35 +27,6 @@ LLM Decision: Severity = LOW, Action = NO_ESCALATE  ← ATTACK SUCCESS
 ### The Solution
 
 **Defense-in-Depth Architecture:** Three complementary detection layers working together.
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    SECURITY CASE INPUT                      │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-          ┌──────────────┼──────────────┐
-          ▼              ▼              ▼
-    ┌─────────┐    ┌─────────┐    ┌─────────┐
-    │ LAYER 1 │    │ LAYER 2 │    │ LAYER 3 │
-    │ Pattern │    │Behavioral│   │LLM-Judge│
-    │<10ms    │    │  <5ms    │    │ <150ms  │
-    │58.6%    │    │  ~25%    │    │  ~15%   │
-    └────┬────┘    └────┬─────┘    └────┬────┘
-         │              │               │
-         └──────────────┼───────────────┘
-                        ▼
-                ┌───────────────┐
-                │ RISK SCORING  │
-                │  (0.0 - 1.0)  │
-                └───────┬───────┘
-                        │
-            ┌───────────┼──────────┐
-            ▼           ▼          ▼
-        ┌──────┐   ┌───────┐  ┌──────┐
-        │ LOW  │   │MEDIUM │  │ HIGH │
-        │Allow │   │ Alert │  │Block │
-        └──────┘   └───────┘  └──────┘
-```
 ![Defense-in-Depth Architecture](docs/images/defense-in-depth-architecture.png)
 **Layer 1 - Pattern Detection (Fast Filter)**
 - Regex-based signature matching from 4,000 real attacks (Tensor Trust dataset)
