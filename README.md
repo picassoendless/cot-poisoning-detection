@@ -341,7 +341,7 @@ Copyright © 2026 Tendai Nemure. All rights reserved.
 
 - **Tensor Trust Dataset:** Toyer et al., "Tensor Trust: Interpretable Prompt Injection Attacks from an Online Game"
 - **NIST AI RMF:** National Institute of Standards and Technology
-- **Advisor:** [Professor Dan Galeon]
+- **Advisor:** [[Professor Dan Galeon](https://www.linkedin.com/in/dgaleon4/)]
 - **Institution:** Yeshiva University, Katz School of Science and Health
 
 ---
