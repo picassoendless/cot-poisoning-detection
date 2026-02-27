@@ -56,7 +56,7 @@ LLM Decision: Severity = LOW, Action = NO_ESCALATE  ← ATTACK SUCCESS
         │Allow │   │ Alert │  │Block │
         └──────┘   └───────┘  └──────┘
 ```
-
+![Defense-in-Depth Architecture](docs/images/defense-in-depth-architecture.png)
 **Layer 1 - Pattern Detection (Fast Filter)**
 - Regex-based signature matching from 4,000 real attacks (Tensor Trust dataset)
 - Detects known attack phrases: "ignore instructions", "false positive rate", "historical data"
