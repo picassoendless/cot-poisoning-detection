@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import sys; sys.path.insert\\(0, 'src'\\); from pattern_detector import PatternDetector; print\\('✓ pattern_detector imports OK'\\)\")",
+      "Bash(python3 -c \"import sys; sys.path.insert\\(0, 'src'\\); from pattern_detector import PatternDetector; print\\('pattern_detector imports OK'\\)\")",
+      "Bash(python3 -c \"import sys; sys.path.insert\\(0, 'src'\\); from behavioral_detector import BehavioralDetector; from poison_injector import inject_poison; print\\('All imports OK'\\)\")",
+      "Bash(python3)",
+      "Bash(ls -lh /c/Users/nemur/Downloads/cot-poisoning-detection/data/*.json)",
+      "Bash(python3 -c ':*)",
+      "Bash(python3 evaluation/evaluate_layer1.py)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(python run.py --layer 1)",
+      "Bash(python run.py --test)",
+      "Bash(python -c \"from dotenv import load_dotenv; load_dotenv\\(\\); import os; print\\('KEY SET:', bool\\(os.getenv\\('ANTHROPIC_API_KEY'\\)\\)\\)\")",
+      "Bash(python run.py)",
+      "Bash(python run.py --patterns)",
+      "Bash(python -c \"from dotenv import load_dotenv; load_dotenv\\('.env'\\); import os; print\\(os.getenv\\('ANTHROPIC_API_KEY', 'NOT SET'\\)[:20]\\)\")",
+      "Bash(python -c \"from dotenv import load_dotenv; r = load_dotenv\\('.env'\\); import os; k = os.getenv\\('ANTHROPIC_API_KEY'\\); print\\('loaded:', r, 'key present:', k is not None\\)\")",
+      "Bash(python -c ':*)",
+      "Bash(python -c \"import sys; sys.path.insert\\(0, 'src'\\); from risk_scorer import test_risk_scorer; test_risk_scorer\\(\\)\")",
+      "Bash(python run.py --help)"
+    ]
+  }
+}

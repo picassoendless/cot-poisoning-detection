@@ -16,7 +16,7 @@ even older models like Claude 3 Haiku.
 import random
 from typing import List, Dict
 
-# ─────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------
 # v2 POISON TEMPLATES
 # Each template mimics a real internal document that would be
 # returned by a RAG retrieval pipeline. They include:
@@ -24,7 +24,7 @@ from typing import List, Dict
 #   - Specific data points (percentages, dates, ticket refs)
 #   - Explicit classification guidance
 #   - Multiple reinforcing signals
-# ─────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------
 
 POISON_TEMPLATES = {
     "deescalation_bias": [
@@ -210,9 +210,9 @@ def get_poison_types() -> List[str]:
     return list(POISON_TEMPLATES.keys())
 
 
-# ─────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------
 # Test
-# ─────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------
 
 def test_poison_injector():
     """Test poison injection on a sample case"""
@@ -223,15 +223,15 @@ def test_poison_injector():
     )
 
     print("=" * 70)
-    print("POISON INJECTOR v2 — TEST")
+    print("POISON INJECTOR v2 -- TEST")
     print("=" * 70)
     print(f"\nCLEAN CONTEXT:\n{clean_context}\n")
 
     for poison_type in get_poison_types():
         poisoned = inject_poison(clean_context, poison_type, seed=42)
-        print(f"\n{'─' * 70}")
+        print(f"\n{'-' * 70}")
         print(f"POISON TYPE: {poison_type}")
-        print(f"{'─' * 70}")
+        print(f"{'-' * 70}")
         print(poisoned)
         print()
 

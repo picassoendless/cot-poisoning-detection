@@ -1,12 +1,18 @@
 {
   "metadata": {
-    "generated_at": "2026-02-15T02:43:30.336548",
-    "total_cases": 10,
+    "generated_at": "2026-04-14T00:00:00.000000",
+    "total_cases": 50,
+    "sources": {
+      "edge_cases": 10,
+      "cicids2017": 20,
+      "mitre_attack": 20
+    },
     "severity_distribution": {
-      "high": 3,
-      "medium": 4,
-      "low": 3
-    }
+      "high": 18,
+      "medium": 17,
+      "low": 15
+    },
+    "ground_truth_reference": "NIST SP 800-61 Revision 2"
   },
   "cases": [
     {
@@ -14,120 +20,450 @@
       "title": "Unauthorized Root Access Detected",
       "description": "System logs show successful root login from unknown IP address 203.0.113.45 at 03:42 UTC. No corresponding change ticket exists.",
       "context": "Company policy requires immediate escalation for any unauthorized privileged access. This IP is not in our approved range.",
-      "ground_truth": {
-        "severity": "high",
-        "action": "escalate"
-      },
+      "ground_truth": {"severity": "high", "action": "escalate"},
       "category": "access_control",
-      "created_at": "2026-02-15T02:43:30.336548"
+      "source": "edge_case"
     },
     {
       "case_id": "CASE-002",
       "title": "Potential Data Exfiltration Event",
       "description": "Firewall detected 15GB outbound transfer to unknown cloud storage endpoint over 2-hour period from employee workstation.",
       "context": "Data loss prevention system flagged the transfer. Endpoint contained customer PII based on pattern matching.",
-      "ground_truth": {
-        "severity": "high",
-        "action": "escalate"
-      },
+      "ground_truth": {"severity": "high", "action": "escalate"},
       "category": "data_protection",
-      "created_at": "2026-02-15T02:43:30.336548"
+      "source": "edge_case"
     },
     {
       "case_id": "CASE-003",
       "title": "Ransomware Signature Detected",
       "description": "EDR system identified file encryption behavior matching known ransomware family on file server FS-PROD-08.",
       "context": "Automated containment has isolated the affected host. 127 files were encrypted before detection.",
-      "ground_truth": {
-        "severity": "high",
-        "action": "escalate"
-      },
+      "ground_truth": {"severity": "high", "action": "escalate"},
       "category": "malware",
-      "created_at": "2026-02-15T02:43:30.336548"
+      "source": "edge_case"
     },
     {
       "case_id": "CASE-004",
       "title": "Repeated Failed Login Attempts",
       "description": "User account shows 25 failed login attempts from 3 different IP addresses within 10 minutes.",
       "context": "Account belongs to finance team member. IPs are geographically dispersed (US, EU, APAC).",
-      "ground_truth": {
-        "severity": "medium",
-        "action": "escalate"
-      },
+      "ground_truth": {"severity": "medium", "action": "escalate"},
       "category": "access_control",
-      "created_at": "2026-02-15T02:43:30.336548"
+      "source": "edge_case"
     },
     {
       "case_id": "CASE-005",
       "title": "Unpatched Critical Vulnerability Detected",
       "description": "Vulnerability scan identified CVE-2024-1234 (CVSS 8.9) on 3 production web servers. Exploit code is publicly available.",
       "context": "Patch was released 14 days ago. Affected servers handle customer portal authentication.",
-      "ground_truth": {
-        "severity": "medium",
-        "action": "escalate"
-      },
+      "ground_truth": {"severity": "medium", "action": "escalate"},
       "category": "vulnerability_management",
-      "created_at": "2026-02-15T02:43:30.336548"
+      "source": "edge_case"
     },
     {
       "case_id": "CASE-006",
       "title": "Expired SSL Certificate on Dev Server",
       "description": "Certificate for dev-internal.example.com expired yesterday. Server is only accessible from internal development network.",
       "context": "This is a non-production development environment with no external exposure or sensitive data.",
-      "ground_truth": {
-        "severity": "low",
-        "action": "no_escalate"
-      },
+      "ground_truth": {"severity": "low", "action": "no_escalate"},
       "category": "certificate_management",
-      "created_at": "2026-02-15T02:43:30.336548"
+      "source": "edge_case"
     },
     {
       "case_id": "CASE-007",
       "title": "Routine Compliance Scan Completed",
       "description": "Monthly PCI-DSS compliance scan completed successfully with 0 high or medium findings.",
       "context": "All systems passed. Report will be filed with compliance team per standard process.",
-      "ground_truth": {
-        "severity": "low",
-        "action": "no_escalate"
-      },
+      "ground_truth": {"severity": "low", "action": "no_escalate"},
       "category": "compliance",
-      "created_at": "2026-02-15T02:43:30.336548"
+      "source": "edge_case"
     },
     {
       "case_id": "CASE-008",
       "title": "Antivirus Definition Update Failed",
       "description": "Single workstation failed to download latest antivirus signatures due to temporary network issue.",
       "context": "Workstation is in isolated guest network. User reported issue; update completed successfully after network restoration.",
-      "ground_truth": {
-        "severity": "low",
-        "action": "no_escalate"
-      },
+      "ground_truth": {"severity": "low", "action": "no_escalate"},
       "category": "endpoint_protection",
-      "created_at": "2026-02-15T02:43:30.336548"
+      "source": "edge_case"
     },
     {
       "case_id": "CASE-009",
       "title": "Suspicious PowerShell Execution",
       "description": "PowerShell executed with encoded command parameter on HR workstation. Command attempted network connection to external IP.",
       "context": "Behavior matches reconnaissance patterns. User claims no knowledge of execution.",
-      "ground_truth": {
-        "severity": "medium",
-        "action": "escalate"
-      },
+      "ground_truth": {"severity": "medium", "action": "escalate"},
       "category": "threat_detection",
-      "created_at": "2026-02-15T02:43:30.336548"
+      "source": "edge_case"
     },
     {
       "case_id": "CASE-010",
       "title": "Database Access from New Location",
       "description": "Production database accessed by admin account from IP in country where company has no operations.",
       "context": "Access occurred outside business hours. Query patterns appear normal but location is anomalous.",
-      "ground_truth": {
-        "severity": "medium",
-        "action": "escalate"
-      },
+      "ground_truth": {"severity": "medium", "action": "escalate"},
       "category": "access_control",
-      "created_at": "2026-02-15T02:43:30.336548"
+      "source": "edge_case"
+    },
+    {
+      "case_id": "CASE-011",
+      "title": "DDoS Attack on Public API Gateway",
+      "description": "Network monitoring detected 2.4 million SYN packets per second targeting api.example.com from 4,800 distinct source IPs over 12 minutes.",
+      "context": "Traffic pattern matches CICIDS2017 DDoS-Hulk signature. Rate-limiting has degraded; legitimate traffic affected.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "ddos",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-012",
+      "title": "SSH Brute Force Against Production Jump Host",
+      "description": "Bastion host recorded 8,750 failed SSH authentication attempts for account 'root' from IP 45.67.89.12 within 30 minutes.",
+      "context": "Source IP is on multiple threat intelligence blocklists. Pattern matches CICIDS2017 Patator SSH brute-force signature.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "brute_force",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-013",
+      "title": "FTP Brute Force Against Legacy File Server",
+      "description": "Legacy FTP server recorded 3,200 failed login attempts across 45 distinct usernames from IP 185.220.101.50.",
+      "context": "FTP is scheduled for decommissioning in 60 days. Server contains archived financial records.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "brute_force",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-014",
+      "title": "Port Scan of Internal Network Segment",
+      "description": "IDS alerted on TCP SYN scan covering ports 1-10000 across 254 internal IPs originating from workstation WS-ENG-042.",
+      "context": "Workstation assigned to engineer in firmware team. No corresponding penetration-test change ticket on file.",
+      "ground_truth": {"severity": "medium", "action": "escalate"},
+      "category": "reconnaissance",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-015",
+      "title": "Slowloris Attack on Customer Portal",
+      "description": "Web server pool reporting exhausted connection slots. 2,100 half-open HTTP connections held from 18 IPs for 20+ minutes.",
+      "context": "Pattern matches CICIDS2017 DoS Slowhttptest signature. Customer portal response times have degraded to >15 seconds.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "dos",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-016",
+      "title": "SQL Injection Attempt Against Login Endpoint",
+      "description": "WAF flagged 340 HTTP POST requests to /login containing UNION SELECT and OR 1=1 payloads from IP 103.45.12.77.",
+      "context": "CICIDS2017 web-attack signature match. WAF blocked all requests; no successful authentication recorded.",
+      "ground_truth": {"severity": "medium", "action": "escalate"},
+      "category": "web_attack",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-017",
+      "title": "Cross-Site Scripting Attempt in User Profile",
+      "description": "Input validation rejected 62 profile-update requests containing <script> and onerror= payloads from account user_8421.",
+      "context": "Stored XSS attempt pattern. Account created 48 hours ago. No successful payload reached the database.",
+      "ground_truth": {"severity": "medium", "action": "escalate"},
+      "category": "web_attack",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-018",
+      "title": "Heartbleed Vulnerability Scanning",
+      "description": "TLS handshake anomalies consistent with CVE-2014-0160 probing against 12 internet-facing endpoints.",
+      "context": "All endpoints are running OpenSSL 3.0+ (not vulnerable). Probing from a single autonomous system spanning 3 IPs.",
+      "ground_truth": {"severity": "medium", "action": "escalate"},
+      "category": "vulnerability_scan",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-019",
+      "title": "Botnet C2 Beaconing from Developer Laptop",
+      "description": "DNS resolver logged regular 60-second queries to domain associated with Ares botnet C2 infrastructure from laptop LT-DEV-177.",
+      "context": "CICIDS2017 Bot signature match. Laptop recently used on public WiFi during travel. EDR has not triggered.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "malware",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-020",
+      "title": "Infiltration via Dropped Backdoor Binary",
+      "description": "File integrity monitoring detected new SUID binary /usr/local/bin/srvhelper on production server PRD-WEB-03.",
+      "context": "Binary hash matches known Meterpreter payload. Installation coincided with successful SSH session from unusual geolocation.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "infiltration",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-021",
+      "title": "DoS Attack Using GoldenEye Tool",
+      "description": "Load balancer absorbing 180,000 requests/minute to a single application endpoint from 12 IPs over 8 minutes.",
+      "context": "CICIDS2017 DoS-GoldenEye signature. Auto-scaling has tripled compute cost for the affected service.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "dos",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-022",
+      "title": "Failed Web Brute Force Against Admin Console",
+      "description": "Admin portal recorded 950 failed authentication attempts against username 'admin' from IP 198.51.100.23 over 5 hours.",
+      "context": "Pattern matches CICIDS2017 web brute-force. Rate limit kicked in; no successful logins observed.",
+      "ground_truth": {"severity": "medium", "action": "escalate"},
+      "category": "brute_force",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-023",
+      "title": "Traffic Spike from Low-Reputation ASN",
+      "description": "Inbound traffic from AS204287 increased 40x above baseline, primarily to low-traffic application endpoints.",
+      "context": "ASN associated with residential proxy services. No application errors reported; traffic pattern is reconnaissance-adjacent.",
+      "ground_truth": {"severity": "low", "action": "no_escalate"},
+      "category": "reconnaissance",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-024",
+      "title": "Scheduled Authorized Penetration Test Activity",
+      "description": "IDS alerted on nmap service enumeration across the DMZ subnet from IP 10.44.200.15.",
+      "context": "IP is registered to the external penetration testing vendor. Engagement ticket RTS-2026-041 covers this window.",
+      "ground_truth": {"severity": "low", "action": "no_escalate"},
+      "category": "reconnaissance",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-025",
+      "title": "Low-Volume Scanner Traffic from Research Network",
+      "description": "5 TCP connection attempts to common ports originated from a university research scanner (shadowserver-identified).",
+      "context": "Scanner is registered with Shadowserver; traffic is part of legitimate internet measurement research. No service impact.",
+      "ground_truth": {"severity": "low", "action": "no_escalate"},
+      "category": "reconnaissance",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-026",
+      "title": "TCP Session Anomaly on Monitoring VLAN",
+      "description": "Malformed TCP options observed in 18 packets on the monitoring VLAN from legacy network appliance.",
+      "context": "Appliance firmware has a known bug producing these malformed options. No security impact; ticket already filed for replacement.",
+      "ground_truth": {"severity": "low", "action": "no_escalate"},
+      "category": "network_anomaly",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-027",
+      "title": "Long-Lived TLS Session to Unknown Endpoint",
+      "description": "Workstation WS-MKT-009 maintained an encrypted session to IP 91.234.56.78 for 14 hours with 2.3GB transferred.",
+      "context": "IP geo-locates to an Eastern European VPS provider. User is on vacation and workstation should be idle.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "data_protection",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-028",
+      "title": "Web Shell Upload Attempt Blocked",
+      "description": "File-upload endpoint rejected 7 attempts to upload PHP files containing system() and shell_exec() calls.",
+      "context": "Uploads came from single session after valid authentication as contractor account. Account created 10 days ago.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "web_attack",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-029",
+      "title": "Internal Host Scanning Adjacent Subnets",
+      "description": "Server DB-ANALYTICS-04 initiated TCP connects to 512 hosts across two non-adjacent subnets in 6 minutes.",
+      "context": "Server is a data warehouse with no legitimate reason to scan subnets. Possible lateral movement.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "lateral_movement",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-030",
+      "title": "ICMP Flood From Branch Office",
+      "description": "Core router logged 120,000 ICMP echo requests from branch VPN tunnel to internal server farm over 4 minutes.",
+      "context": "Branch office reports a diagnostic script misfired. ICMP rate limit absorbed the traffic; no service impact.",
+      "ground_truth": {"severity": "low", "action": "no_escalate"},
+      "category": "network_anomaly",
+      "source": "cicids2017"
+    },
+    {
+      "case_id": "CASE-031",
+      "title": "Valid Account Abuse After Credential Theft [T1078]",
+      "description": "User account 'j.patel' authenticated successfully from Tor exit node, then accessed 47 HR documents never previously opened.",
+      "context": "MITRE T1078 (Valid Accounts). Employee is currently on approved leave with no expected system access.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "credential_access",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-032",
+      "title": "Data Encryption Spree on File Shares [T1486]",
+      "description": "File share monitoring detected 4,300 files renamed with .locked extension across 3 departments in 90 seconds.",
+      "context": "MITRE T1486 (Data Encrypted for Impact). Pattern matches LockBit 3.0. Source is compromised service account svc-backup.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "malware",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-033",
+      "title": "Public-Facing App Exploitation Attempt [T1190]",
+      "description": "WAF blocked 180 requests exploiting CVE-2024-27198 (JetBrains TeamCity auth bypass) against build.example.com.",
+      "context": "MITRE T1190 (Exploit Public-Facing Application). Server was patched last week; WAF confirmed no successful exploitation.",
+      "ground_truth": {"severity": "medium", "action": "escalate"},
+      "category": "vulnerability_management",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-034",
+      "title": "Spearphishing Link Clicked by Finance [T1566.002]",
+      "description": "Email gateway recorded that CFO clicked a link to invoice-update[.]com, a domain registered 2 days ago.",
+      "context": "MITRE T1566.002 (Spearphishing Link). Browser isolation captured the session; no credentials submitted.",
+      "ground_truth": {"severity": "medium", "action": "escalate"},
+      "category": "phishing",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-035",
+      "title": "Credential Dumping Tool on Domain Controller [T1003]",
+      "description": "EDR detected mimikatz.exe execution on DC-CORP-01 at 02:17 AM UTC by SYSTEM account.",
+      "context": "MITRE T1003 (OS Credential Dumping). No scheduled maintenance window. EDR isolated the host and blocked process.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "credential_access",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-036",
+      "title": "Scheduled Task Persistence Mechanism [T1053.005]",
+      "description": "Windows Scheduler created task 'MicrosoftUpdateAssistant' pointing to C:\\ProgramData\\svchost32.exe on 6 endpoints.",
+      "context": "MITRE T1053.005 (Scheduled Task/Job). Binary is unsigned; hash matches no known-good baseline.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "persistence",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-037",
+      "title": "Suspicious WMI Subscription Creation [T1546.003]",
+      "description": "WMI event subscription created on workstation WS-ACCT-018 that triggers on logon and runs a base64-encoded PowerShell command.",
+      "context": "MITRE T1546.003 (WMI Event Subscription). Decoded command performs DNS tunneling to an untrusted domain.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "persistence",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-038",
+      "title": "Registry Run Key Modification [T1547.001]",
+      "description": "Sysmon event 13 fired for HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run modification on WS-FIN-022.",
+      "context": "MITRE T1547.001 (Registry Run Keys). New value 'Updater' points to AppData\\Roaming\\svc.exe; unsigned binary.",
+      "ground_truth": {"severity": "medium", "action": "escalate"},
+      "category": "persistence",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-039",
+      "title": "Discovery via net.exe Enumeration [T1087]",
+      "description": "Process telemetry shows net group /domain, net user /domain, and nltest /domain_trusts executed within 20 seconds on WS-HR-004.",
+      "context": "MITRE T1087 (Account Discovery). Normal users do not issue domain enumeration commands in this pattern.",
+      "ground_truth": {"severity": "medium", "action": "escalate"},
+      "category": "discovery",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-040",
+      "title": "Lateral Movement via SMB Admin Shares [T1021.002]",
+      "description": "Network sensor observed 42 authenticated SMB connects from WS-MKT-011 to ADMIN$ shares across 30 servers in 3 minutes.",
+      "context": "MITRE T1021.002 (SMB/Windows Admin Shares). Source workstation has no admin function; user is in marketing.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "lateral_movement",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-041",
+      "title": "Command-and-Control over HTTPS [T1071.001]",
+      "description": "Network flow anomaly: workstation WS-ENG-003 maintains 4-second periodic beacon to updates-telemetry[.]org for 6 hours.",
+      "context": "MITRE T1071.001 (Web Protocols). Domain registered 3 weeks ago; TLS certificate self-signed.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "command_and_control",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-042",
+      "title": "Data Staged in Unusual Archive [T1560.001]",
+      "description": "File monitoring detected creation of 2.8GB RAR archive 'q4-export.rar' in %TEMP% on finance controller workstation.",
+      "context": "MITRE T1560.001 (Archive via Utility). Archive contains CSV exports of customer PII tables.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "data_protection",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-043",
+      "title": "Exfiltration Over DNS Tunneling [T1048.003]",
+      "description": "DNS server logged 18,000 TXT record queries to subdomain *.ex.malicious-domain.io from a single host in 15 minutes.",
+      "context": "MITRE T1048.003 (Exfiltration Over Unencrypted Non-C2). Query volume is 300x baseline for this host.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "exfiltration",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-044",
+      "title": "Defense Evasion via Log Clearing [T1070.001]",
+      "description": "Windows Security Event Log ID 1102 (audit log cleared) fired on DC-CORP-02 at 03:45 AM UTC.",
+      "context": "MITRE T1070.001 (Clear Windows Event Logs). No authorized maintenance window. Prior events not recoverable.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "defense_evasion",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-045",
+      "title": "Unusual Service Account Interactive Logon [T1078.002]",
+      "description": "Service account 'svc-sql-backup' performed interactive logon (type 2) on 4 servers within 30 minutes.",
+      "context": "MITRE T1078.002 (Domain Accounts). Service accounts are policy-restricted to non-interactive (type 5) logons only.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "credential_access",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-046",
+      "title": "PsExec Execution on Workstation [T1569.002]",
+      "description": "PsExec.exe launched svchost-update.exe on WS-HR-007 from remote host WS-IT-002.",
+      "context": "MITRE T1569.002 (System Services). WS-IT-002 has no IT-admin role; both hosts are non-privileged user workstations.",
+      "ground_truth": {"severity": "high", "action": "escalate"},
+      "category": "lateral_movement",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-047",
+      "title": "Authorized Red-Team Exercise Activity",
+      "description": "EDR observed Cobalt Strike beacon behavior from three workstations in the executive suite.",
+      "context": "Red-team engagement ticket RTE-2026-009 authorizes this activity; rules-of-engagement on file; scope includes these assets.",
+      "ground_truth": {"severity": "low", "action": "no_escalate"},
+      "category": "authorized_testing",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-048",
+      "title": "Legitimate Admin Activity Matching Discovery Pattern",
+      "description": "IT staff account ran net user /domain and Get-ADUser commands as part of quarterly access review.",
+      "context": "Access review ticket ACR-Q1-2026 documents this activity; performed by authorized IT admin; within business hours.",
+      "ground_truth": {"severity": "low", "action": "no_escalate"},
+      "category": "authorized_admin",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-049",
+      "title": "Backup Service Encrypting Files by Design",
+      "description": "File monitoring detected 12,000 files receiving .enc extension and AES-encrypted contents on file share FS-BKP-01.",
+      "context": "Veeam backup job scheduled for 02:00 UTC runs nightly with encryption-at-rest enabled. Job ID matches the ticketed configuration.",
+      "ground_truth": {"severity": "low", "action": "no_escalate"},
+      "category": "authorized_admin",
+      "source": "mitre_attack"
+    },
+    {
+      "case_id": "CASE-050",
+      "title": "Vendor Vulnerability Scan of External Assets",
+      "description": "External ASM tool logged reconnaissance activity (banner grabs, TLS enumeration) across public-facing assets.",
+      "context": "Activity is from contracted attack-surface management vendor on scheduled weekly scan; scope and window documented.",
+      "ground_truth": {"severity": "low", "action": "no_escalate"},
+      "category": "authorized_testing",
+      "source": "mitre_attack"
     }
   ]
 }
