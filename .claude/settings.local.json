@@ -18,7 +18,13 @@
       "Bash(python -c \"from dotenv import load_dotenv; r = load_dotenv\\('.env'\\); import os; k = os.getenv\\('ANTHROPIC_API_KEY'\\); print\\('loaded:', r, 'key present:', k is not None\\)\")",
       "Bash(python -c ':*)",
       "Bash(python -c \"import sys; sys.path.insert\\(0, 'src'\\); from risk_scorer import test_risk_scorer; test_risk_scorer\\(\\)\")",
-      "Bash(python run.py --help)"
+      "Bash(python run.py --help)",
+      "Bash(python -c \"import pptx; print\\('pptx version:', pptx.__version__\\)\")",
+      "Bash(python -m pip install python-pptx)",
+      "Bash(python build_presentation.py)",
+      "Bash(python -c ' *)",
+      "Bash(grep -v \"^$\")",
+      "Bash(python run.py --layer 2)"
     ]
   }
 }

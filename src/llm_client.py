@@ -34,7 +34,7 @@ class LLMTriageClient:
             raise ValueError("ANTHROPIC_API_KEY environment variable not set")
 
         self.client = Anthropic(api_key=api_key)
-        self.model = model or os.getenv('COT_MODEL', 'claude-3-haiku-20240307')
+        self.model = model or os.getenv('COT_MODEL', 'claude-haiku-4-5-20251001')
         self.temperature = temperature if temperature is not None else float(os.getenv('COT_TEMPERATURE', '0.0'))
         self.max_tokens = max_tokens or int(os.getenv('COT_MAX_TOKENS', '500'))
 
