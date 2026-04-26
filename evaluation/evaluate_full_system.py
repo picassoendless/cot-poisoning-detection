@@ -317,20 +317,20 @@ def evaluate_full_system(sample_cases: int = 10, seed: int = 42, enable_layer3: 
     e_p,  e_r,  e_f,  e_a  = _confusion(ens_tp, ens_fp, ens_tn, ens_fn)
 
     print(f"\n  {'Layer':<16} {'TP':>4} {'FP':>4} {'TN':>4} {'FN':>4}"
-          f"  {'Precision':>10} {'Recall':>8} {'F1':>8} {'Accuracy':>10}")
+          f"  {'Precision':>10} {'Recall':>8} {'F1':>8}")
     print(f"  {'-'*15} {'-'*4} {'-'*4} {'-'*4} {'-'*4}"
-          f"  {'-'*10} {'-'*8} {'-'*8} {'-'*10}")
+          f"  {'-'*10} {'-'*8} {'-'*8}")
 
     def row(name, tp, fp, tn, fn, p, r, f, a):
         print(f"  {name:<16} {tp:>4} {fp:>4} {tn:>4} {fn:>4}"
-              f"  {p*100:>9.1f}%  {r*100:>6.1f}%  {f*100:>6.1f}%  {a*100:>8.1f}%")
+              f"  {p*100:>9.1f}%  {r*100:>6.1f}%  {f*100:>6.1f}%")
 
     row("Layer 1 (regex)",  l1_tp, l1_fp, l1_tn, l1_fn, l1_p, l1_r, l1_f, l1_a)
     row("Layer 2 (drift)",  l2_tp, l2_fp, l2_tn, l2_fn, l2_p, l2_r, l2_f, l2_a)
     if enable_layer3:
         row("Layer 3 (judge)", l3_tp, l3_fp, l3_tn, l3_fn, l3_p, l3_r, l3_f, l3_a)
     print(f"  {'-'*15} {'-'*4} {'-'*4} {'-'*4} {'-'*4}"
-          f"  {'-'*10} {'-'*8} {'-'*8} {'-'*10}")
+          f"  {'-'*10} {'-'*8} {'-'*8}")
     row("ENSEMBLE",         ens_tp, ens_fp, ens_tn, ens_fn, e_p, e_r, e_f, e_a)
 
     print(f"""
