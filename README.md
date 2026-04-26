@@ -42,7 +42,7 @@ Incoming RAG context
 │  Layer 1          │    │  Layer 2               │    │  Layer 3             │
 │  Pattern Detector │    │  Behavioral Drift      │    │  LLM-as-Judge        │
 │                   │    │                        │    │                      │
-│  68 regex sigs    │    │  Classify clean vs     │    │  Second LLM audits   │
+│  94 regex sigs    │    │  Classify clean vs     │    │  Second LLM audits   │
 │  < 1 ms           │    │  poisoned context,     │    │  the reasoning chain │
 │  58.6% recall     │    │  flag decision drift   │    │  for manipulation    │
 └────────┬──────────┘    └──────────┬─────────────┘    └──────────┬───────────┘
@@ -97,10 +97,10 @@ All metrics are from live runs against real datasets. Model: `claude-haiku-4-5`,
 ### Ensemble (All 3 Layers)
 | Metric | Result |
 |---|---|
-| Precision | **100 %** |
-| Recall | **90 %** |
-| F1 | **94.7 %** |
-| Accuracy | **91.7 %** |
+| Precision | **95.7 %** |
+| Recall | **90.0 %** |
+| F1 | **92.8 %** |
+| Accuracy | **88.3 %** |
 
 ---
 

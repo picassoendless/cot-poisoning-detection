@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.join(project_root, 'src'))
 from pattern_detector import PatternDetector
 
 
-def evaluate_layer1(sample_size=1000, detection_target=70, latency_target=10):
+def evaluate_layer1(sample_size=4000, detection_target=70, latency_target=10):
     """Evaluate Layer 1: precision, recall, latency"""
 
     detector = PatternDetector()

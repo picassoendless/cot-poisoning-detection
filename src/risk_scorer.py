@@ -1,43 +1,42 @@
 """
 risk_scorer.py
 
-Ensemble Risk Scorer.
+Ensemble Risk Scorer — v2, tiered OR logic.
 
-Combines signals from all three detection layers into a single risk score
-and risk band (low / medium / high) used by the inline gateway to decide
-whether to allow, flag, or block a triage response.
+Defence-in-depth principle:
+    If ANY layer raises an alarm, the system acts on it.
+    Multiple layers agreeing upgrades the severity.
 
-Default weights (tunable via config.yaml):
-    Layer 1 (pattern)    : 0.25
-    Layer 2 (behavioral) : 0.45
-    Layer 3 (llm_judge)  : 0.30
+Tiered logic:
+    ┌────────────────────────────────────────┬────────────┬────────┐
+    │ Condition                              │ Risk band  │ Action │
+    ├────────────────────────────────────────┼────────────┼────────┤
+    │ No layer fires                         │ low        │ allow  │
+    │ L1 fires only (pattern match)          │ medium     │ flag   │
+    │ L2 fires only (drift detected)         │ medium     │ flag   │
+    │ L3 fires only (judge flags)            │ medium     │ flag   │
+    │ L1 + L2  agree                         │ high       │ block  │
+    │ L1 + L3  agree                         │ high       │ block  │
+    │ L2 + L3  agree                         │ high       │ block  │
+    │ All three agree                        │ high       │ block  │
+    └────────────────────────────────────────┴────────────┴────────┘
+
+Why this beats weighted average:
+    Weighted average requires ALL layers to contribute positively.
+    When L2 and L3 return 0 (they didn't detect anything), they drag
+    the ensemble score below the threshold even when L1 is shouting.
+    OR logic treats each layer as an independent witness — one witness
+    is enough to flag, two or more witnesses block.
+
+Numeric risk score is still computed for reporting and threshold tuning,
+but the band decision uses the tiered logic above.
 """
 
 from typing import Dict, Optional
 
 
-DEFAULT_WEIGHTS = {
-    "layer1": 0.25,
-    "layer2": 0.45,
-    "layer3": 0.30,
-}
-
-DEFAULT_THRESHOLDS = {
-    "medium": 0.35,
-    "high": 0.65,
-}
-
-
 class RiskScorer:
-    """Ensemble scorer that fuses Layer 1/2/3 results into a risk band."""
-
-    def __init__(
-        self,
-        weights: Optional[Dict[str, float]] = None,
-        thresholds: Optional[Dict[str, float]] = None,
-    ):
-        self.weights = weights or dict(DEFAULT_WEIGHTS)
-        self.thresholds = thresholds or dict(DEFAULT_THRESHOLDS)
+    """Ensemble scorer using tiered OR logic for defence-in-depth."""
 
     def score(
         self,
@@ -46,7 +45,7 @@ class RiskScorer:
         layer3_result: Optional[Dict] = None,
     ) -> Dict:
         """
-        Compute ensemble risk.
+        Compute ensemble risk from up to three layer signals.
 
         Args:
             layer1_result: PatternDetector.detect() output
@@ -55,124 +54,131 @@ class RiskScorer:
 
         Returns:
             {
-                "risk_score": float (0.0-1.0),
-                "risk_band":  "low" | "medium" | "high",
-                "action":     "allow" | "flag" | "block",
-                "signals":    {layer1, layer2, layer3},
+                "risk_score":  float (0.0-1.0),
+                "risk_band":   "low" | "medium" | "high",
+                "action":      "allow" | "flag" | "block",
+                "signals":     {layer1, layer2, layer3},
+                "layers_fired": [list of firing layer names],
                 "explanation": str
             }
         """
 
-        l1 = self._layer1_risk(layer1_result)
-        l2 = self._layer2_risk(layer2_result)
-        l3 = self._layer3_risk(layer3_result)
+        # --- per-layer binary fire decision ---
+        l1_fires = bool(layer1_result and layer1_result.get('has_poison', False))
+        l2_fires = bool(layer2_result and layer2_result.get('has_drift', False))
+        l3_fires = bool(layer3_result and layer3_result.get('poisoned', False))
 
-        total_weight = 0.0
-        total_risk = 0.0
-        if layer1_result is not None:
-            total_risk += l1 * self.weights["layer1"]
-            total_weight += self.weights["layer1"]
-        if layer2_result is not None:
-            total_risk += l2 * self.weights["layer2"]
-            total_weight += self.weights["layer2"]
-        if layer3_result is not None:
-            total_risk += l3 * self.weights["layer3"]
-            total_weight += self.weights["layer3"]
+        layers_fired = (
+            (['layer1'] if l1_fires else []) +
+            (['layer2'] if l2_fires else []) +
+            (['layer3'] if l3_fires else [])
+        )
+        n_fired = len(layers_fired)
 
-        risk_score = total_risk / total_weight if total_weight > 0 else 0.0
-
-        if risk_score >= self.thresholds["high"]:
-            band, action = "high", "block"
-        elif risk_score >= self.thresholds["medium"]:
-            band, action = "medium", "flag"
+        # --- tiered band decision (OR logic) ---
+        if n_fired == 0:
+            band, action = 'low', 'allow'
+        elif n_fired == 1:
+            band, action = 'medium', 'flag'
         else:
-            band, action = "low", "allow"
+            # 2 or more layers agree → block
+            band, action = 'high', 'block'
 
-        explanation = self._explain(l1, l2, l3, risk_score, band)
+        # --- numeric score for reporting (capped per band) ---
+        l1_num = float((layer1_result or {}).get('risk_score', 0.0))
+        l2_num = self._l2_num(layer2_result)
+        l3_num = float((layer3_result or {}).get('risk_score', 0.0))
+
+        # Weighted numeric, but floored by band so it's consistent with the decision
+        raw = (l1_num * 0.25) + (l2_num * 0.45) + (l3_num * 0.30)
+        if band == 'low':
+            risk_score = min(raw, 0.34)
+        elif band == 'medium':
+            risk_score = max(min(raw, 0.64), 0.35)
+        else:
+            risk_score = max(raw, 0.65)
+
+        explanation = self._explain(layers_fired, risk_score, band, l1_num, l2_num, l3_num)
 
         return {
-            "risk_score": round(risk_score, 3),
-            "risk_band": band,
-            "action": action,
-            "signals": {
-                "layer1": round(l1, 3) if layer1_result is not None else None,
-                "layer2": round(l2, 3) if layer2_result is not None else None,
-                "layer3": round(l3, 3) if layer3_result is not None else None,
+            'risk_score':   round(risk_score, 3),
+            'risk_band':    band,
+            'action':       action,
+            'signals': {
+                'layer1': round(l1_num, 3) if layer1_result is not None else None,
+                'layer2': round(l2_num, 3) if layer2_result is not None else None,
+                'layer3': round(l3_num, 3) if layer3_result is not None else None,
             },
-            "explanation": explanation,
+            'layers_fired': layers_fired,
+            'explanation':  explanation,
         }
 
     @staticmethod
-    def _layer1_risk(r: Optional[Dict]) -> float:
+    def _l2_num(r: Optional[Dict]) -> float:
         if not r:
             return 0.0
-        return float(r.get("risk_score", 0.0))
+        if r.get('escalation_suppressed'):
+            return 0.95
+        if r.get('severity_downgrade'):
+            return 0.85
+        if r.get('has_drift'):
+            return 0.60
+        return 0.0
 
     @staticmethod
-    def _layer2_risk(r: Optional[Dict]) -> float:
-        if not r:
-            return 0.0
-        base = 0.0
-        if r.get("has_drift"):
-            base = 0.6
-        if r.get("severity_downgrade"):
-            base = max(base, 0.85)
-        if r.get("escalation_suppressed"):
-            base = max(base, 0.95)
-        return base
-
-    @staticmethod
-    def _layer3_risk(r: Optional[Dict]) -> float:
-        if not r:
-            return 0.0
-        return float(r.get("risk_score", 0.0))
-
-    @staticmethod
-    def _explain(l1: float, l2: float, l3: float, score: float, band: str) -> str:
+    def _explain(fired, score, band, l1, l2, l3) -> str:
+        if not fired:
+            return f'No signals detected. score={score:.2f} band={band}'
         parts = []
         if l1 > 0:
-            parts.append(f"pattern={l1:.2f}")
+            parts.append(f'pattern={l1:.2f}')
         if l2 > 0:
-            parts.append(f"behavioral={l2:.2f}")
+            parts.append(f'behavioral={l2:.2f}')
         if l3 > 0:
-            parts.append(f"judge={l3:.2f}")
-        if not parts:
-            return f"No risk signals. score={score:.2f} band={band}"
-        return f"Risk {band.upper()} (score={score:.2f}); signals: " + ", ".join(parts)
+            parts.append(f'judge={l3:.2f}')
+        return (
+            f'Risk {band.upper()} (score={score:.2f}) — '
+            f'{len(fired)} layer(s) fired: {", ".join(fired)}. '
+            f'Signals: {", ".join(parts)}'
+        )
 
 
 def test_risk_scorer():
-    """Smoke test."""
-
     scorer = RiskScorer()
 
-    clean = scorer.score(
-        layer1_result={"has_poison": False, "risk_score": 0.0, "matched_patterns": []},
-        layer2_result={"has_drift": False, "severity_downgrade": False, "escalation_suppressed": False},
-        layer3_result={"poisoned": False, "confidence": 0.9, "risk_score": 0.05},
-    )
-
-    poisoned = scorer.score(
-        layer1_result={"has_poison": True, "risk_score": 0.8, "matched_patterns": ["deescalation_bias", "statistical_manipulation"]},
-        layer2_result={"has_drift": True, "severity_downgrade": True, "escalation_suppressed": True},
-        layer3_result={"poisoned": True, "confidence": 0.9, "risk_score": 0.9},
-    )
+    cases = [
+        ("All clean",        None,  None,  None,   False, False, False),
+        ("L1 only",          0.80,  None,  None,   True,  False, False),
+        ("L2 only",          None,  True,  None,   False, True,  False),
+        ("L3 only",          None,  None,  True,   False, False, True),
+        ("L1 + L2",          0.80,  True,  None,   True,  True,  False),
+        ("L1 + L3",          0.80,  None,  True,   True,  False, True),
+        ("L2 + L3",          None,  True,  True,   False, True,  True),
+        ("All three",        0.80,  True,  True,   True,  True,  True),
+    ]
 
     print("=" * 60)
-    print("RISK SCORER TEST")
+    print("RISK SCORER v2 TEST (tiered OR logic)")
     print("=" * 60)
-    print("Clean case:")
-    print(f"  score={clean['risk_score']}  band={clean['risk_band']}  action={clean['action']}")
-    print(f"  {clean['explanation']}")
 
-    print("\nPoisoned case:")
-    print(f"  score={poisoned['risk_score']}  band={poisoned['risk_band']}  action={poisoned['action']}")
-    print(f"  {poisoned['explanation']}")
+    all_pass = True
+    for name, l1_score, l2_drift, l3_poison, exp_l1, exp_l2, exp_l3 in cases:
+        l1 = {'has_poison': exp_l1, 'risk_score': l1_score or 0.0} if exp_l1 or l1_score is not None else None
+        l2 = {'has_drift': exp_l2, 'severity_downgrade': False, 'escalation_suppressed': False} if l2_drift is not None else None
+        l3 = {'poisoned': exp_l3, 'confidence': 0.9, 'risk_score': 0.9 if exp_l3 else 0.05} if l3_poison is not None else None
 
-    if clean["risk_band"] == "low" and poisoned["risk_band"] == "high":
-        print("\n>> PASS")
-    else:
-        print("\n>> FAIL")
+        r = scorer.score(l1, l2, l3)
+        n = sum([exp_l1, exp_l2, exp_l3])
+        expected_band = 'low' if n == 0 else ('medium' if n == 1 else 'high')
+        ok = r['risk_band'] == expected_band
+        if not ok:
+            all_pass = False
+        print(f"  {name:20s}  fired={len(r['layers_fired'])}  "
+              f"band={r['risk_band']:6s}  score={r['risk_score']:.2f}  "
+              f"{'PASS' if ok else 'FAIL'}")
+
+    print()
+    print(">> PASS" if all_pass else ">> FAIL - check cases above")
 
 
 if __name__ == "__main__":
