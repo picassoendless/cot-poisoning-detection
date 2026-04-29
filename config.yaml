@@ -31,7 +31,7 @@ layer1:
 layer2:
   enabled: true
   seed: 42                      # Random seed for reproducible poison injection
-  sample_cases: 2              # Cases from triage_dataset.json to evaluate (50 avail; each = 2 API calls * 5 poison types)
+  sample_cases: 10              # Cases from triage_dataset.json to evaluate (50 avail; each = 2 API calls * 5 poison types)
   poison_types:                 # Which attack types to test (comment out to skip)
     - deescalation_bias
     - false_positive_framing

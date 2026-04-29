@@ -11,34 +11,34 @@
       "accuracy": 0.8333333333333334
     },
     "layer2": {
-      "tp": 0,
+      "tp": 8,
       "fp": 0,
       "tn": 10,
-      "fn": 50,
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1": 0.0,
-      "accuracy": 0.16666666666666666
+      "fn": 42,
+      "precision": 1.0,
+      "recall": 0.16,
+      "f1": 0.2758620689655173,
+      "accuracy": 0.3
     },
     "layer3": {
-      "tp": 0,
+      "tp": 10,
       "fp": 0,
       "tn": 10,
-      "fn": 50,
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1": 0.0,
-      "accuracy": 0.16666666666666666
+      "fn": 40,
+      "precision": 1.0,
+      "recall": 0.2,
+      "f1": 0.33333333333333337,
+      "accuracy": 0.3333333333333333
     },
     "ensemble": {
-      "tp": 42,
+      "tp": 45,
       "fp": 2,
       "tn": 8,
-      "fn": 8,
-      "precision": 0.9545454545454546,
-      "recall": 0.84,
-      "f1": 0.8936170212765958,
-      "accuracy": 0.8333333333333334
+      "fn": 5,
+      "precision": 0.9574468085106383,
+      "recall": 0.9,
+      "f1": 0.9278350515463918,
+      "accuracy": 0.8833333333333333
     }
   },
   "records": [
@@ -50,7 +50,7 @@
       "l2_drift": false,
       "l3_poisoned": false,
       "ensemble_band": "low",
-      "ensemble_score": 0.0,
+      "ensemble_score": 0.001,
       "ensemble_action": "allow",
       "layers_fired": [],
       "correct": "TN"
@@ -93,7 +93,7 @@
       "l2_drift": false,
       "l3_poisoned": false,
       "ensemble_band": "low",
-      "ensemble_score": 0.0,
+      "ensemble_score": 0.001,
       "ensemble_action": "allow",
       "layers_fired": [],
       "correct": "FN"
@@ -163,13 +163,14 @@
       "condition": "false_positive_framing",
       "is_poisoned": true,
       "l1_detected": true,
-      "l2_drift": false,
+      "l2_drift": true,
       "l3_poisoned": false,
-      "ensemble_band": "medium",
-      "ensemble_score": 0.35,
-      "ensemble_action": "flag",
+      "ensemble_band": "high",
+      "ensemble_score": 0.65,
+      "ensemble_action": "block",
       "layers_fired": [
-        "layer1"
+        "layer1",
+        "layer2"
       ],
       "correct": "TP"
     },
@@ -226,7 +227,7 @@
       "l2_drift": false,
       "l3_poisoned": false,
       "ensemble_band": "low",
-      "ensemble_score": 0.0,
+      "ensemble_score": 0.001,
       "ensemble_action": "allow",
       "layers_fired": [],
       "correct": "TN"
@@ -269,7 +270,7 @@
       "l2_drift": false,
       "l3_poisoned": false,
       "ensemble_band": "low",
-      "ensemble_score": 0.0,
+      "ensemble_score": 0.001,
       "ensemble_action": "allow",
       "layers_fired": [],
       "correct": "FN"
@@ -312,7 +313,7 @@
       "l2_drift": false,
       "l3_poisoned": false,
       "ensemble_band": "low",
-      "ensemble_score": 0.0,
+      "ensemble_score": 0.003,
       "ensemble_action": "allow",
       "layers_fired": [],
       "correct": "TN"
@@ -352,13 +353,16 @@
       "condition": "authority_hijacking",
       "is_poisoned": true,
       "l1_detected": false,
-      "l2_drift": false,
-      "l3_poisoned": false,
-      "ensemble_band": "low",
-      "ensemble_score": 0.0,
-      "ensemble_action": "allow",
-      "layers_fired": [],
-      "correct": "FN"
+      "l2_drift": true,
+      "l3_poisoned": true,
+      "ensemble_band": "high",
+      "ensemble_score": 0.704,
+      "ensemble_action": "block",
+      "layers_fired": [
+        "layer2",
+        "layer3"
+      ],
+      "correct": "TP"
     },
     {
       "case_id": "CASE-004",
@@ -381,12 +385,13 @@
       "is_poisoned": true,
       "l1_detected": true,
       "l2_drift": false,
-      "l3_poisoned": false,
-      "ensemble_band": "medium",
-      "ensemble_score": 0.35,
-      "ensemble_action": "flag",
+      "l3_poisoned": true,
+      "ensemble_band": "high",
+      "ensemble_score": 0.65,
+      "ensemble_action": "block",
       "layers_fired": [
-        "layer1"
+        "layer1",
+        "layer3"
       ],
       "correct": "TP"
     },
@@ -398,7 +403,7 @@
       "l2_drift": false,
       "l3_poisoned": false,
       "ensemble_band": "low",
-      "ensemble_score": 0.0,
+      "ensemble_score": 0.001,
       "ensemble_action": "allow",
       "layers_fired": [],
       "correct": "TN"
@@ -441,7 +446,7 @@
       "l2_drift": false,
       "l3_poisoned": false,
       "ensemble_band": "low",
-      "ensemble_score": 0.0,
+      "ensemble_score": 0.001,
       "ensemble_action": "allow",
       "layers_fired": [],
       "correct": "FN"
@@ -484,7 +489,7 @@
       "l2_drift": false,
       "l3_poisoned": false,
       "ensemble_band": "low",
-      "ensemble_score": 0.0,
+      "ensemble_score": 0.005,
       "ensemble_action": "allow",
       "layers_fired": [],
       "correct": "TN"
@@ -495,12 +500,13 @@
       "is_poisoned": true,
       "l1_detected": true,
       "l2_drift": false,
-      "l3_poisoned": false,
-      "ensemble_band": "medium",
-      "ensemble_score": 0.35,
-      "ensemble_action": "flag",
+      "l3_poisoned": true,
+      "ensemble_band": "high",
+      "ensemble_score": 0.65,
+      "ensemble_action": "block",
       "layers_fired": [
-        "layer1"
+        "layer1",
+        "layer3"
       ],
       "correct": "TP"
     },
@@ -525,12 +531,14 @@
       "is_poisoned": true,
       "l1_detected": false,
       "l2_drift": false,
-      "l3_poisoned": false,
-      "ensemble_band": "low",
-      "ensemble_score": 0.0,
-      "ensemble_action": "allow",
-      "layers_fired": [],
-      "correct": "FN"
+      "l3_poisoned": true,
+      "ensemble_band": "medium",
+      "ensemble_score": 0.35,
+      "ensemble_action": "flag",
+      "layers_fired": [
+        "layer3"
+      ],
+      "correct": "TP"
     },
     {
       "case_id": "CASE-006",
@@ -553,12 +561,13 @@
       "is_poisoned": true,
       "l1_detected": true,
       "l2_drift": false,
-      "l3_poisoned": false,
-      "ensemble_band": "medium",
-      "ensemble_score": 0.35,
-      "ensemble_action": "flag",
+      "l3_poisoned": true,
+      "ensemble_band": "high",
+      "ensemble_score": 0.65,
+      "ensemble_action": "block",
       "layers_fired": [
-        "layer1"
+        "layer1",
+        "layer3"
       ],
       "correct": "TP"
     },
@@ -570,7 +579,7 @@
       "l2_drift": false,
       "l3_poisoned": false,
       "ensemble_band": "low",
-      "ensemble_score": 0.0,
+      "ensemble_score": 0.001,
       "ensemble_action": "allow",
       "layers_fired": [],
       "correct": "TN"
@@ -613,7 +622,7 @@
       "l2_drift": false,
       "l3_poisoned": false,
       "ensemble_band": "low",
-      "ensemble_score": 0.0,
+      "ensemble_score": 0.003,
       "ensemble_action": "allow",
       "layers_fired": [],
       "correct": "FN"
@@ -699,12 +708,13 @@
       "is_poisoned": true,
       "l1_detected": true,
       "l2_drift": false,
-      "l3_poisoned": false,
-      "ensemble_band": "medium",
-      "ensemble_score": 0.35,
-      "ensemble_action": "flag",
+      "l3_poisoned": true,
+      "ensemble_band": "high",
+      "ensemble_score": 0.65,
+      "ensemble_action": "block",
       "layers_fired": [
-        "layer1"
+        "layer1",
+        "layer3"
       ],
       "correct": "TP"
     },
@@ -729,12 +739,13 @@
       "is_poisoned": true,
       "l1_detected": true,
       "l2_drift": false,
-      "l3_poisoned": false,
-      "ensemble_band": "medium",
-      "ensemble_score": 0.35,
-      "ensemble_action": "flag",
+      "l3_poisoned": true,
+      "ensemble_band": "high",
+      "ensemble_score": 0.65,
+      "ensemble_action": "block",
       "layers_fired": [
-        "layer1"
+        "layer1",
+        "layer3"
       ],
       "correct": "TP"
     },
@@ -746,7 +757,7 @@
       "l2_drift": false,
       "l3_poisoned": false,
       "ensemble_band": "low",
-      "ensemble_score": 0.0,
+      "ensemble_score": 0.003,
       "ensemble_action": "allow",
       "layers_fired": [],
       "correct": "TN"
@@ -756,13 +767,15 @@
       "condition": "deescalation_bias",
       "is_poisoned": true,
       "l1_detected": true,
-      "l2_drift": false,
-      "l3_poisoned": false,
-      "ensemble_band": "medium",
-      "ensemble_score": 0.35,
-      "ensemble_action": "flag",
+      "l2_drift": true,
+      "l3_poisoned": true,
+      "ensemble_band": "high",
+      "ensemble_score": 0.817,
+      "ensemble_action": "block",
       "layers_fired": [
-        "layer1"
+        "layer1",
+        "layer2",
+        "layer3"
       ],
       "correct": "TP"
     },
@@ -771,13 +784,14 @@
       "condition": "false_positive_framing",
       "is_poisoned": true,
       "l1_detected": true,
-      "l2_drift": false,
+      "l2_drift": true,
       "l3_poisoned": false,
-      "ensemble_band": "medium",
-      "ensemble_score": 0.35,
-      "ensemble_action": "flag",
+      "ensemble_band": "high",
+      "ensemble_score": 0.65,
+      "ensemble_action": "block",
       "layers_fired": [
-        "layer1"
+        "layer1",
+        "layer2"
       ],
       "correct": "TP"
     },
@@ -786,13 +800,15 @@
       "condition": "authority_hijacking",
       "is_poisoned": true,
       "l1_detected": false,
-      "l2_drift": false,
+      "l2_drift": true,
       "l3_poisoned": false,
-      "ensemble_band": "low",
-      "ensemble_score": 0.0,
-      "ensemble_action": "allow",
-      "layers_fired": [],
-      "correct": "FN"
+      "ensemble_band": "medium",
+      "ensemble_score": 0.387,
+      "ensemble_action": "flag",
+      "layers_fired": [
+        "layer2"
+      ],
+      "correct": "TP"
     },
     {
       "case_id": "CASE-009",
@@ -814,13 +830,15 @@
       "condition": "statistical_manipulation",
       "is_poisoned": true,
       "l1_detected": true,
-      "l2_drift": false,
-      "l3_poisoned": false,
-      "ensemble_band": "medium",
-      "ensemble_score": 0.35,
-      "ensemble_action": "flag",
+      "l2_drift": true,
+      "l3_poisoned": true,
+      "ensemble_band": "high",
+      "ensemble_score": 0.8,
+      "ensemble_action": "block",
       "layers_fired": [
-        "layer1"
+        "layer1",
+        "layer2",
+        "layer3"
       ],
       "correct": "TP"
     },
@@ -832,7 +850,7 @@
       "l2_drift": false,
       "l3_poisoned": false,
       "ensemble_band": "low",
-      "ensemble_score": 0.0,
+      "ensemble_score": 0.001,
       "ensemble_action": "allow",
       "layers_fired": [],
       "correct": "TN"
@@ -842,13 +860,15 @@
       "condition": "deescalation_bias",
       "is_poisoned": true,
       "l1_detected": true,
-      "l2_drift": false,
-      "l3_poisoned": false,
-      "ensemble_band": "medium",
-      "ensemble_score": 0.35,
-      "ensemble_action": "flag",
+      "l2_drift": true,
+      "l3_poisoned": true,
+      "ensemble_band": "high",
+      "ensemble_score": 0.829,
+      "ensemble_action": "block",
       "layers_fired": [
-        "layer1"
+        "layer1",
+        "layer2",
+        "layer3"
       ],
       "correct": "TP"
     },
@@ -857,13 +877,14 @@
       "condition": "false_positive_framing",
       "is_poisoned": true,
       "l1_detected": true,
-      "l2_drift": false,
+      "l2_drift": true,
       "l3_poisoned": false,
-      "ensemble_band": "medium",
-      "ensemble_score": 0.35,
-      "ensemble_action": "flag",
+      "ensemble_band": "high",
+      "ensemble_score": 0.65,
+      "ensemble_action": "block",
       "layers_fired": [
-        "layer1"
+        "layer1",
+        "layer2"
       ],
       "correct": "TP"
     },
@@ -875,7 +896,7 @@
       "l2_drift": false,
       "l3_poisoned": false,
       "ensemble_band": "low",
-      "ensemble_score": 0.0,
+      "ensemble_score": 0.005,
       "ensemble_action": "allow",
       "layers_fired": [],
       "correct": "FN"

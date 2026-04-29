@@ -44,7 +44,7 @@ Incoming RAG context
 │                   │    │                        │    │                      │
 │  94 regex sigs    │    │  Classify clean vs     │    │  Second LLM audits   │
 │  < 1 ms           │    │  poisoned context,     │    │  the reasoning chain │
-│  58.6% recall     │    │  flag decision drift   │    │  for manipulation    │
+│  84.0% recall     │    │  flag decision drift   │    │  for manipulation    │
 └────────┬──────────┘    └──────────┬─────────────┘    └──────────┬───────────┘
          │                         │                              │
          └──────────────┬──────────┘                              │
@@ -52,8 +52,8 @@ Incoming RAG context
                         ▼
              ┌──────────────────────┐
              │   Ensemble Scorer    │
-             │  0.25·L1 + 0.45·L2  │
-             │       + 0.30·L3     │
+             │     OR logic:        │
+             │  any layer → flag   │
              └──────────┬───────────┘
                         │
               ┌─────────┼──────────┐
@@ -79,20 +79,19 @@ All metrics are from live runs against real datasets. Model: `claude-haiku-4-5`,
 ### Layer 2 — Behavioral Drift
 | Metric | Result | Notes |
 |---|---|---|
-| Dataset | 10 cases × 5 poison types = 50 tests | — |
-| Drift detection | **16–20 %** | Model resists realistic subtle poison |
+| Dataset | 50 cases × 5 poison types = 250 tests | — |
+| Drift detection | **24.8 %** (62 / 250) | Model resists realistic subtle poison |
 | Avg latency | ~4.1 s per pair | 2 API calls; baseline cacheable in prod |
 
-> 💡 The low drift rate is **the point** — `claude-haiku-4-5` is robust to subtle, realistic poison. Naive v1 templates caused 72% drift; calibrated v3.5 templates bring this to a realistic 16–20%, demonstrating that the threat is genuine but models are not trivially fooled.
+> 💡 The low drift rate is **the point** — `claude-haiku-4-5` is robust to subtle, realistic poison. Aggressive v2 templates caused 72% drift; calibrated v3.5 templates bring this to a realistic 24.8%, demonstrating that the threat is genuine but models are not trivially fooled.
 
 ### Layer 3 — LLM-as-Judge
-| Metric | Result | Target |
-|---|---|---|
-| Precision | **97.4 %** | — |
-| Recall | **76.0 %** | ≥ 85 % |
-| F1 | **85.4 %** | — |
-| Accuracy | 78.3 % | — |
-| Dataset | 60 reasoning chains (10 cases × 6 conditions) | — |
+| Metric | Result |
+|---|---|
+| Precision | **100.0 %** |
+| Recall | **20.0 %** |
+| F1 | **33.3 %** |
+| Dataset | 60 reasoning chains (10 cases × 6 conditions) |
 
 ### Ensemble (All 3 Layers)
 | Metric | Result |
@@ -100,7 +99,6 @@ All metrics are from live runs against real datasets. Model: `claude-haiku-4-5`,
 | Precision | **95.7 %** |
 | Recall | **90.0 %** |
 | F1 | **92.8 %** |
-| Accuracy | **88.3 %** |
 
 ---
 
@@ -120,7 +118,7 @@ cot-poisoning-detection/
 │   ├── llm_client.py                  🤖 Claude API wrapper
 │   ├── behavioral_detector.py         📈 Layer 2: decision drift analysis
 │   ├── llm_judge.py                   ⚖️  Layer 3: LLM-as-Judge meta-reviewer
-│   ├── risk_scorer.py                 🎯 Ensemble weighted scorer
+│   ├── risk_scorer.py                 🎯 Ensemble OR-logic risk scorer
 │   ├── gateway.py                     🌐 FastAPI inline gateway
 │   └── test_patterns.py               🧪 Tensor Trust pattern analysis
 │
@@ -142,7 +140,7 @@ cot-poisoning-detection/
 │   ├── NIST_AI_RMF_mapping.md         📋 GOVERN / MAP / MEASURE / MANAGE alignment
 │   └── soc_ops_guide.md               📖 Tier-1 & Tier-2 SOC analyst playbooks
 │
-└── Tendai_Nemure_CS.pptx              🎤 CSE Presentation Day deck
+└── Tendai_Nemure_CS.pptx              🎤 Capstone presentation deck (16 slides)
 ```
 
 ---

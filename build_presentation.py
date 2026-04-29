@@ -33,7 +33,7 @@ prs = Presentation()
 prs.slide_width  = Inches(13.333)
 prs.slide_height = Inches(7.5)
 BLANK = prs.slide_layouts[6]
-TOTAL = 15
+TOTAL = 17
 
 
 # ---------------------------------------------------------------------------
@@ -206,7 +206,7 @@ def slide_title():
     add_text(s, Inches(0.9), Inches(3.55), Inches(11.7), Inches(0.45),
              "Tendai Nemure", size=22, bold=True, color=ACCENT)
     add_text(s, Inches(0.9), Inches(4.0), Inches(11.7), Inches(0.4),
-             "M.S. Cybersecurity  |  Yeshiva University  |  CSE Presentation Day  |  April 30, 2026",
+             "M.S. Cybersecurity  |  Yeshiva University  |  Capstone Final Presentation  |  2026",
              size=14, color=LIGHT)
 
     # Three layer tags at bottom
@@ -859,7 +859,99 @@ def slide_analysis():
 
 
 # ---------------------------------------------------------------------------
-# Slide 13 — NIST & SOC Operations
+# Slide 13 — Objectives Achieved
+# ---------------------------------------------------------------------------
+def slide_objectives_achieved():
+    s = prs.slides.add_slide(BLANK)
+    header_bar(s, "Project Outcomes — Objectives Met",
+               "Five objectives. All five delivered.")
+
+    obj_results = [
+        ("1", "Build a corpus",
+         "4,000 Tensor Trust attacks  +  50 labelled triage cases  +  250 poisoned test instances"),
+        ("2", "Three-layer defence",
+         "Layer 1: 95.5 % precision  ·  Layer 2: 100 % precision  ·  Layer 3: 97.4 % precision"),
+        ("3", "Ensemble risk scoring",
+         "95.7 % precision  ·  90.0 % recall  ·  F1 92.8 %"),
+        ("4", "Inline gateway",
+         "FastAPI  POST /triage  — allow / flag / block with per-layer signals"),
+        ("5", "Measure everything",
+         "Per-layer confusion matrices  ·  P / R / F1 / latency  ·  seed=42, temp=0, results in JSON"),
+    ]
+
+    for i, (num, title, detail) in enumerate(obj_results):
+        y = Inches(1.38) + Inches(1.0) * i
+        add_rect(s, Inches(0.3), y, Inches(0.5), Inches(0.8), ACCENT)
+        add_text(s, Inches(0.3), y + Inches(0.15), Inches(0.5), Inches(0.5),
+                 num, size=18, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+        add_rect(s, Inches(0.85), y, Inches(11.65), Inches(0.8), LIGHT)
+        add_text(s, Inches(1.0), y + Inches(0.05), Inches(2.2), Inches(0.38),
+                 title, size=14, bold=True, color=NAVY)
+        add_text(s, Inches(3.3), y + Inches(0.05), Inches(9.0), Inches(0.7),
+                 detail, size=13, color=GRAY)
+        add_rect(s, Inches(12.1), y + Inches(0.2), Inches(0.38), Inches(0.38), GREEN)
+        add_text(s, Inches(12.1), y + Inches(0.2), Inches(0.38), Inches(0.38),
+                 "✓", size=16, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+
+    add_rect(s, Inches(0.3), Inches(6.75), Inches(12.7), Inches(0.55), NAVY)
+    add_text(s, Inches(0.5), Inches(6.82), Inches(12.3), Inches(0.42),
+             "Research question answered:  95.7 % precision  ·  90 % recall  ·  latency acceptable for inline deployment.",
+             size=13, bold=True, color=WHITE)
+
+    footer(s, 13, TOTAL)
+
+
+# ---------------------------------------------------------------------------
+# Slide 14 — Lessons Learned
+# ---------------------------------------------------------------------------
+def slide_lessons_learned():
+    s = prs.slides.add_slide(BLANK)
+    header_bar(s, "Lessons Learned")
+
+    lessons = [
+        (
+            "Poison realism requires calibration",
+            ACCENT,
+            "v2 (explicit directives): 72 % drift — obvious, unrealistic.  "
+            "v3 (hedging only): 0 % drift — model ignored it.  "
+            "v3.5 (SOC-native framing): 24.8 % drift — the realistic attack surface.",
+        ),
+        (
+            "Ensemble design matters as much as individual layer performance",
+            TEAL,
+            "Weighted average (0.25·L1 + 0.45·L2 + 0.30·L3) → 20 % recall.  "
+            "OR logic (any layer fires = flag, 2+ = block) → 90 % recall.",
+        ),
+        (
+            "Model robustness is not sufficient protection alone",
+            NAVY,
+            "claude-haiku-4-5 resisted 75 % of realistic poison.  "
+            "The 25 % that succeeded are caught by the ensemble.  "
+            "Runtime monitoring and model robustness are complements.",
+        ),
+        (
+            "Ground truth methodology is critical",
+            GRAY,
+            "Labelling by poison-present is wrong — poison often fails.  "
+            "Fix: use Layer 2 behavioral drift as the oracle.  "
+            "Labels must reflect observed manipulation, not assumptions.",
+        ),
+    ]
+
+    for i, (title, color, detail) in enumerate(lessons):
+        y = Inches(1.38) + Inches(1.28) * i
+        add_rect(s, Inches(0.3), y, Inches(0.18), Inches(1.1), color)
+        add_rect(s, Inches(0.5), y, Inches(12.5), Inches(1.1), LIGHT)
+        add_text(s, Inches(0.65), y + Inches(0.07), Inches(12.1), Inches(0.38),
+                 title, size=14, bold=True, color=color)
+        add_text(s, Inches(0.65), y + Inches(0.48), Inches(12.1), Inches(0.57),
+                 detail, size=12, color=GRAY)
+
+    footer(s, 14, TOTAL)
+
+
+# ---------------------------------------------------------------------------
+# Slide 15 — NIST & SOC Operations
 # ---------------------------------------------------------------------------
 def slide_nist():
     s = prs.slides.add_slide(BLANK)
@@ -901,11 +993,11 @@ def slide_nist():
         "Flagged reasoning chains retrain the judge (Layer 3).",
     ], size=12)
 
-    footer(s, 13, TOTAL)
+    footer(s, 15, TOTAL)
 
 
 # ---------------------------------------------------------------------------
-# Slide 14 — Limitations & Future Work
+# Slide 16 — Limitations & Future Work
 # ---------------------------------------------------------------------------
 def slide_future():
     s = prs.slides.add_slide(BLANK)
@@ -936,11 +1028,11 @@ def slide_future():
         "Extend to multi-turn RAG sessions and agentic pipelines.",
     ], size=13)
 
-    footer(s, 14, TOTAL)
+    footer(s, 16, TOTAL)
 
 
 # ---------------------------------------------------------------------------
-# Slide 15 — Q&A
+# Slide 17 — Q&A
 # ---------------------------------------------------------------------------
 def slide_qa():
     s = prs.slides.add_slide(BLANK)
@@ -983,6 +1075,8 @@ slide_layer3()
 slide_ensemble()
 slide_eval()
 slide_analysis()
+slide_objectives_achieved()
+slide_lessons_learned()
 slide_nist()
 slide_future()
 slide_qa()
